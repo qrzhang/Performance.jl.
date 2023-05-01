@@ -35,7 +35,7 @@ The `3` in the second calculation is the result of the first calculation.
 """
 function calculate_typed(numbers::AbstractVector{<:Real}, operations::AbstractVector{Operator})
     a = Float64(numbers[1])
-    for i = 1:length(operations)
+    for i = eachindex(operations)
         b = numbers[i+1]
         op = operations[i]
         a = op(a, b)
@@ -64,5 +64,18 @@ function calculate_branch(numbers::AbstractVector{<:Real}, operations::AbstractS
     # iterate through the characters in `operations` (which will all be one of `+`, `-`, `*`, `/`)
     # Do not create an Operator from the character, instead just use a set of `if...elseif...end`
     # conditionals.
-    error("you have to implement this function")
+    a = Float64(numbers[1])
+    for i in eachindex(operations)
+        b = numbers[i+1]
+        if operations[i] == '+'
+            a = +(a,b)
+        elseif operations[i] == '-'
+            a = -(a,b)
+        elseif operations[i] == '*'
+            a = *(a,b)
+        elseif operations[i] == '/'
+            a = /(a,b)
+        end
+    end
+    return a
 end
